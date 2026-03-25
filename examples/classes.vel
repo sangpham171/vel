@@ -1,0 +1,40 @@
+// classes.vel — Classes, inheritance, instances
+
+class Animal:
+    name:  Text
+    sound: Text
+    legs:  Int
+
+    fn speak()    -> name + " says " + sound
+    fn describe() -> name + " has " + legs + " legs"
+
+class Dog extends Animal:
+    breed: Text
+
+    fn fetch()     -> name + " fetches the ball!"
+    fn introduce() -> "I am " + name + ", a " + breed
+
+class Cat extends Animal:
+    indoor: Bool
+
+    fn purr()     -> name + " purrs..."
+    fn lifestyle() -> if indoor: name + " stays indoors" else: name + " roams outside"
+
+// ── Demo ──────────────────────────────────────────────────────────────────────
+
+let rex = Dog(name: "Rex", sound: "Woof", legs: 4, breed: "Labrador")
+let whiskers = Cat(name: "Whiskers", sound: "Meow", legs: 4, indoor: true)
+
+say rex.speak()
+say rex.describe()
+say rex.fetch()
+say rex.introduce()
+
+say whiskers.speak()
+say whiskers.purr()
+say whiskers.lifestyle()
+
+// List of animals
+let animals = [rex, whiskers]
+for animal in animals:
+    say animal.speak()

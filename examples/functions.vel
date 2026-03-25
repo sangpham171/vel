@@ -1,0 +1,49 @@
+// functions.vel — Functions, closures, higher-order functions
+
+// Simple one-liner
+fn double(n: Int) -> n * 2
+
+// Multi-line
+fn greet(name: Text) -> Text:
+    let msg = "Hello, " + name + "!"
+    -> msg
+
+// Default parameters
+fn greetWith(name: Text, prefix: Text) -> prefix + " " + name
+
+// Higher-order: pass a function as argument
+fn applyTwice(f: Fn, x: Int) -> f(f(x))
+
+// Closures
+fn makeAdder(amount: Int):
+    -> fn(x: Int) -> x + amount
+
+// Recursive function
+fn factorial(n: Int) -> Int:
+    if n <= 1: -> 1
+    -> n * factorial(n - 1)
+
+// Fibonacci
+fn fib(n: Int) -> Int:
+    if n <= 1: -> n
+    -> fib(n - 1) + fib(n - 2)
+
+// ── Demo ──────────────────────────────────────────────────────────────────────
+
+say double(21)              // 42
+say greet("World")          // Hello, World!
+say greetWith("Alice", "Dr.")
+
+let addFive = makeAdder(5)
+say addFive(10)             // 15
+say applyTwice(double, 3)   // 12  (double(double(3)))
+
+say factorial(10)           // 3628800
+
+// Functional list operations
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+let evens   = numbers.filter(fn(n) -> n % 2 == 0)
+let doubled = evens.map(fn(n) -> n * 2)
+let total   = doubled.reduce(fn(acc, n) -> acc + n, 0)
+
+say "Evens doubled and summed: " + total  // 60

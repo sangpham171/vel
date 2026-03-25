@@ -1,0 +1,73 @@
+// control_flow.vel — if/else, match, for, while, repeat
+
+// ── If / else ─────────────────────────────────────────────────────────────────
+
+fn classify(score: Int) -> Text:
+    if score >= 90:
+        -> "A"
+    else if score >= 80:
+        -> "B"
+    else if score >= 70:
+        -> "C"
+    else if score >= 60:
+        -> "D"
+    else:
+        -> "F"
+
+say classify(95)   // A
+say classify(83)   // B
+say classify(55)   // F
+
+// ── Match ─────────────────────────────────────────────────────────────────────
+
+fn dayType(day: Text) -> Text:
+    match day:
+        "Monday"    -> "Start of work week"
+        "Tuesday"   -> "Work day"
+        "Wednesday" -> "Midweek"
+        "Thursday"  -> "Almost Friday"
+        "Friday"    -> "TGIF!"
+        "Saturday"  -> "Weekend"
+        "Sunday"    -> "Weekend"
+        _           -> "Unknown day"
+
+say dayType("Friday")    // TGIF!
+say dayType("Saturday")  // Weekend
+say dayType("Holiday")   // Unknown day
+
+// ── For loop ─────────────────────────────────────────────────────────────────
+
+let fruits = ["apple", "banana", "cherry", "date"]
+for fruit in fruits:
+    say "I like " + fruit
+
+// Accumulate
+let total = 0
+let prices = [10, 25, 8, 42, 17]
+for price in prices:
+    total += price
+say "Total: " + total  // 102
+
+// Nested loops
+for i in [1, 2, 3]:
+    for j in [1, 2, 3]:
+        if i == j:
+            say i + " x " + j + " = " + (i * j)
+
+// ── While ─────────────────────────────────────────────────────────────────────
+
+let count = 1
+while count <= 5:
+    say "Count: " + count
+    count += 1
+
+// ── Repeat ────────────────────────────────────────────────────────────────────
+
+repeat 3 times:
+    say "Beep!"
+
+// ── Range-based iteration ─────────────────────────────────────────────────────
+
+let nums = range(1, 11)   // [1..10]
+let evens = nums.filter(fn(n) -> n % 2 == 0)
+say "Even numbers 1-10: " + evens

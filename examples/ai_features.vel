@@ -1,0 +1,50 @@
+// ai_features.vel — Vel's AI-native capabilities
+// NOTE: These features require an AI provider configured in vel.toml
+//       In the current alpha, they return stub responses.
+
+// ── ask: Natural language data queries ───────────────────────────────────────
+
+// Imagine `users` is a database connection or a list of User objects.
+// `ask` lets you query it in plain English.
+
+// let inactive = wait ask users: "who has not logged in for 30 days?"
+// let vips     = wait ask users: "who spent more than $1000 this month?"
+// let atRisk   = wait ask users: "who downgraded their plan recently?"
+
+// ── infer: AI-generated insights from data ────────────────────────────────────
+
+// let report_text = "Q3 revenue up 12%. Churn increased. New feature adoption low."
+// let summary = wait infer from report_text: "summarize top 3 risks in bullet points"
+// say summary
+
+// ── route: Intent-based routing ───────────────────────────────────────────────
+
+fn handleMessage(message: Text):
+    route message:
+        if feels like "billing"         -> say "Routing to billing team..."
+        if feels like "technical issue" -> say "Routing to engineering..."
+        if feels like "feature request" -> say "Routing to product team..."
+        else                            -> say "Routing to general support..."
+
+handleMessage("My invoice is wrong and I was charged twice")
+handleMessage("The app crashes when I upload a file")
+handleMessage("It would be great to have dark mode")
+handleMessage("Hello, I have a general question")
+
+// ── AI agent ─────────────────────────────────────────────────────────────────
+
+// In a full Vel program with vel.ai configured:
+//
+// use vel.ai
+//
+// let agent = ai.agent(
+//     model: "claude-sonnet-4",
+//     persona: "You are a helpful support agent for Acme Corp.",
+//     tools: [db.queryTool(), email.sendTool()]
+// )
+//
+// let reply = wait agent.handle(userMessage)
+// say reply
+
+say "AI feature demo complete."
+say "(Full AI inference requires vel.ai configured with a provider)"

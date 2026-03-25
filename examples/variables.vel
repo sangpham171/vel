@@ -1,0 +1,29 @@
+// variables.vel — Variables, types, and basic operations
+
+let name   = "Alice"
+let age    = 28
+fix PI     = 3.14159
+let active = true
+
+say "Name: " + name
+say "Age:  " + age
+say "PI:   " + PI
+
+// String operations
+let greeting = "Hello, " + name + "!"
+say greeting
+say greeting.upper()
+say greeting.lower()
+
+// Math
+let area = PI * 5.0 * 5.0
+say "Circle area: " + area
+
+// Lists
+let scores = [95, 87, 92, 78, 100]
+say "Scores: " + scores
+say "Count:  " + scores.count()
+
+// Maps
+let config = {host: "localhost", port: "3000"}
+say "Config: " + config

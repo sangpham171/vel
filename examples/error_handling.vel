@@ -1,0 +1,82 @@
+// error_handling.vel — Result[T], ok/fail, pattern matching, propagation
+
+// ── Basic Result ──────────────────────────────────────────────────────────────
+
+fn divide(a: Float, b: Float) -> Result[Float]:
+    if b == 0:
+        -> fail("Cannot divide by zero")
+    -> ok(a / b)
+
+// Match on the result
+match divide(10.0, 2.0):
+    ok(val)  -> say "10 / 2 = " + val
+    fail(e)  -> say "Error: " + e
+
+match divide(5.0, 0.0):
+    ok(val)  -> say "Result: " + val
+    fail(e)  -> say "Error: " + e   // "Error: Cannot divide by zero"
+
+// ── Result with is check ──────────────────────────────────────────────────────
+
+let result = divide(9.0, 3.0)
+if result is ok:
+    say "Division succeeded"
+else:
+    say "Division failed"
+
+// ── Option type ───────────────────────────────────────────────────────────────
+
+fn findUser(id: Int) -> Option[Text]:
+    if id == 1: -> some("Alice")
+    if id == 2: -> some("Bob")
+    -> none
+
+match findUser(1):
+    some(name) -> say "Found: " + name
+    none       -> say "User not found"
+
+match findUser(99):
+    some(name) -> say "Found: " + name
+    none       -> say "User not found"   // "User not found"
+
+// ── Error propagation with ? ──────────────────────────────────────────────────
+
+fn safeSqrt(n: Float) -> Result[Float]:
+    if n < 0:
+        -> fail("Cannot take sqrt of negative number")
+    -> ok(sqrt(n))
+
+fn computeHypotenuse(a: Float, b: Float) -> Result[Float]:
+    let a2 = safeSqrt(a * a)?   // propagates fail() if error
+    let b2 = safeSqrt(b * b)?
+    -> ok(a2 + b2)
+
+match computeHypotenuse(3.0, 4.0):
+    ok(h)   -> say "Hypotenuse: " + h   // 5.0
+    fail(e) -> say "Error: " + e
+
+match computeHypotenuse(-3.0, 4.0):
+    ok(h)   -> say "Hypotenuse: " + h
+    fail(e) -> say "Error: " + e  // propagated error
+
+// ── Chained results ───────────────────────────────────────────────────────────
+
+fn parseAge(s: Text) -> Result[Int]:
+    let n = toInt(s)
+    if n < 0 or n > 150:
+        -> fail("Age must be between 0 and 150")
+    -> ok(n)
+
+fn validateUser(name: Text, age_str: Text) -> Result[Text]:
+    let age = parseAge(age_str)?
+    if name.len() < 2:
+        -> fail("Name too short")
+    -> ok(name + " (age " + age + ")")
+
+match validateUser("Alice", "28"):
+    ok(user)  -> say "Valid user: " + user
+    fail(e)   -> say "Validation error: " + e
+
+match validateUser("A", "28"):
+    ok(user)  -> say "Valid user: " + user
+    fail(e)   -> say "Validation error: " + e  // "Name too short"

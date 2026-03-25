@@ -1,0 +1,70 @@
+// collections.vel — Lists, Maps, functional operations
+
+// ── Lists ─────────────────────────────────────────────────────────────────────
+
+let nums    = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]
+let words   = ["banana", "apple", "cherry", "date", "elderberry"]
+
+say "Count:   " + nums.count()
+say "Sum:     " + nums.sum()
+say "First:   " + nums.first()
+say "Last:    " + nums.last()
+say "Sorted:  " + nums.sort()
+say "Reversed:" + nums.reverse()
+
+// Functional pipeline
+let result = nums
+    .filter(fn(n) -> n > 3)
+    .map(fn(n) -> n * 10)
+    .sort()
+
+say "Filtered, mapped, sorted: " + result
+
+// Map and reduce
+let squares = nums.map(fn(n) -> n * n)
+let sumSq   = squares.reduce(fn(acc, x) -> acc + x, 0)
+say "Sum of squares: " + sumSq
+
+// Contains
+say "Contains 9? " + nums.contains(9)
+say "Contains 7? " + nums.contains(7)
+
+// Join to string
+say "Words: " + words.sort().join(", ")
+
+// ── Maps ──────────────────────────────────────────────────────────────────────
+
+let scores = {
+    alice:   95,
+    bob:     87,
+    charlie: 92,
+    diana:   78
+}
+
+say "All keys:   " + scores.keys()
+say "All values: " + scores.values()
+say "Count:      " + scores.count()
+say "Has alice:  " + scores.has("alice")
+say "Has evan:   " + scores.has("evan")
+
+// ── Nested structures ─────────────────────────────────────────────────────────
+
+let users = [
+    {name: "Alice", age: "28", role: "admin"},
+    {name: "Bob",   age: "34", role: "user"},
+    {name: "Carol", age: "25", role: "admin"}
+]
+
+say "Total users: " + users.count()
+
+// ── Text operations ───────────────────────────────────────────────────────────
+
+let sentence = "  Hello, Vel World!  "
+say sentence.trim()
+say sentence.trim().lower()
+say sentence.trim().upper()
+say sentence.trim().replace("World", "Universe")
+say sentence.trim().split(" ")
+say sentence.trim().contains("Vel")
+say sentence.trim().startsWith("Hello")
+say sentence.trim().len()

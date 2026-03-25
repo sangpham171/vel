@@ -1,0 +1,11 @@
+// fizzbuzz.vel — Classic FizzBuzz in Vel
+
+fn fizzBuzz(n: Int) -> Text:
+    match true:
+        n % 15 == 0 -> "FizzBuzz"
+        n % 3  == 0 -> "Fizz"
+        n % 5  == 0 -> "Buzz"
+        _           -> toText(n)
+
+for i in range(1, 31):
+    say fizzBuzz(i)

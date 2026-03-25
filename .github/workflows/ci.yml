@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: make
+
+      - name: Run examples
+        run: |
+          ./vel run examples/hello.vel
+          ./vel run examples/fizzbuzz.vel | head -5
+          ./vel run examples/classes.vel
+          ./vel run examples/error_handling.vel
+
+      - name: Run test suite
+        run: bash tests/run_tests.sh
+
+      - name: Check docs exist
+        run: |
+          test -f docs/quick-start.md     && echo "quick-start ok"
+          test -f docs/language-spec.md   && echo "language-spec ok"
+          test -f docs/stdlib.md          && echo "stdlib ok"
+          test -f docs/cookbook.md        && echo "cookbook ok"
+          test -f docs/contributing.md    && echo "contributing ok"
+
+  build-windows:
+    name: Build (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with gcc
+        run: |
+          gcc -std=c99 -O2 -o vel.exe src/main.c src/util.c src/lexer.c src/parser.c src/interpreter.c src/env.c src/value.c src/stdlib.c src/error.c -lm
+      - name: Smoke test
+        run: |
+          echo 'say "Hello from VEL on Windows!"' > hello.vel
+          ./vel.exe run hello.vel
